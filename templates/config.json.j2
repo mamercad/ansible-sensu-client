@@ -1,0 +1,15 @@
+{
+  "rabbitmq": {
+    "host": "{{ rabbitmq['host'] }}",
+    "vhost": "{{ rabbitmq['vhost'] }}",
+    "user": "{{ rabbitmq['user'] }}",
+    "password": "{{ rabbitmq['pass'] }}"
+  },
+  "redis": {
+    "host": "{{ redis['host'] }}"
+  },
+  "api": {
+    "host": "{{ api['host'] }}",
+    "port": {{ api['port'] }}
+  }
+}

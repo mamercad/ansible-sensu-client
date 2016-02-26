@@ -1,0 +1,15 @@
+---
+# vars file for ansible-sensu-client
+
+rabbitmq:
+  host: localhost
+  vhost: /sensu
+  user: sensu
+  pass: secret
+
+redis:
+  host: localhost
+
+api:
+  host: localhost
+  port: 4567

@@ -1,0 +1,31 @@
+---
+# tasks file for ansible-sensu-client
+
+- name: selinux permissive
+  selinux: policy=targeted state=permissive
+
+- name: firewalld stopped
+  service: name=firewalld state=stopped enabled=no
+
+- name: deploy sensu.repo
+  copy: src=sensu.repo dest=/etc/yum.repos.d/sensu.repo
+
+- name: install sensu (core)
+  yum: name=sensu state=present
+
+- name: deploy sample client
+  get_url: url=http://sensuapp.org/docs/0.21/files/client.json dest=/etc/sensu/conf.d/client.json
+
+- name: ensure that sensu:sensu owns /etc/sensu
+  file: name=/etc/sensu owner=sensu group=sensu recurse=yes
+
+- name: sensu-install -v -p disk-checks:1.0.2
+  shell: sensu-install -v -p disk-checks:1.0.2
+  register: command_result
+  changed_when: '"already been installed" not in command_result.stdout'
+
+- name: deploy config.json
+  template: src=config.json.j2 dest=/etc/sensu/config.json
+
+- name: start and enable sensu-client
+  service: name=sensu-client state=started enabled=yes
